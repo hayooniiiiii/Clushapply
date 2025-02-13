@@ -2,6 +2,12 @@ import React from "react";
 import { Box, Typography, Button, Stack, Divider } from "@mui/material";
 
 function Sidebar() {
+    // OAuth 로그인 URL
+    const handleLogin = (provider) => {
+        const redirectUrl = `http://localhost:8080/oauth2/authorization/${provider}`;
+        window.location.href = redirectUrl;
+    };
+
     return (
         <Box
             sx={{
@@ -11,9 +17,9 @@ function Sidebar() {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 alignItems: "center",
-                padding: "0", // padding 제거
+                padding: "0",
                 borderRight: "1px solid #ddd",
-                height: "100vh", // 전체 화면 높이 적용
+                height: "100vh",
             }}
         >
             {/* 로고 */}
@@ -71,13 +77,14 @@ function Sidebar() {
                     {/* 네이버 로그인 버튼 */}
                     <Button
                         variant="contained"
+                        onClick={() => handleLogin("naver")}
                         sx={{
                             backgroundColor: "#03c75a",
                             minWidth: "50px",
                             height: "50px",
                             borderRadius: "50%",
                             "&:hover": { backgroundColor: "#028f3e" },
-                            padding: 0, // 이미지 맞추기 위해 padding 제거
+                            padding: 0,
                         }}
                     >
                         <img
@@ -90,6 +97,7 @@ function Sidebar() {
                     {/* 구글 로그인 버튼 */}
                     <Button
                         variant="contained"
+                        onClick={() => handleLogin("google")}
                         sx={{
                             backgroundColor: "#fff",
                             minWidth: "50px",
@@ -109,6 +117,7 @@ function Sidebar() {
                     {/* 카카오 로그인 버튼 */}
                     <Button
                         variant="contained"
+                        onClick={() => handleLogin("kakao")}
                         sx={{
                             backgroundColor: "#fee500",
                             minWidth: "50px",
