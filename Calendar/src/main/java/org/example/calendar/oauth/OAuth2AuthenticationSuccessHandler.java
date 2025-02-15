@@ -32,7 +32,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
 
-
         boolean isFirstLogin = principalDetails.isFirstLogin();
         //System.out.println(isFirstLogin);
 
@@ -64,9 +63,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         //  최초 로그인과 기존 로그인에 따라 Redirect 설정
         if (isFirstLogin) {
-            response.sendRedirect("http://localhost:3000/first-login?token=" + jwtToken);
+            response.sendRedirect("http://localhost:3000/profile?UserId=" + user.getUserId());
         } else {
-            response.sendRedirect("http://localhost:3000/dashboard?token=" + jwtToken);
+            response.sendRedirect("http://localhost:3000/calendar?UserId=" + user.getUserId());
         }
     }
 }

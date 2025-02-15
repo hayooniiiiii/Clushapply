@@ -60,8 +60,4 @@ public class JwtTokenProvider {
         return getClaims(token).getClaim("userId").asInt();
     }
 
-    // JWT에서 사용자 이메일 추출 메서드
-    public String getUserEmail(String token) {
-        return getClaims(token).getClaim("userEmail").asString();
-    }
 }

@@ -45,7 +45,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        System.out.println(request.getHeader(JwtProperties.HEADER_STRING).replace("Bearer ", ""));
+        //System.out.println(request.getHeader(JwtProperties.HEADER_STRING).replace("Bearer ", ""));
         //jwt토큰을 검증을해서 정상적인 사용자인지 확인
         String jwtToken=request.getHeader(JwtProperties.HEADER_STRING).replace("Bearer ", "");
 
@@ -63,6 +63,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                chain.doFilter(request, response);
             }
         }
 
