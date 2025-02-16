@@ -19,11 +19,11 @@
 - **React & MUI 사용 (프론트엔드)**
 
 ### 📌 **DB 스키마 및 초기 데이터**
-이 프로젝트의 **DB 스키마 및 초기 데이터**는 GitHub 저장소의 `database/` 폴더에 포함되어 있습니다.  
+이 프로젝트의 **DB 스키마 및 초기 데이터**는 GitHub 저장소의 `calendar/` 폴더에 포함되어 있습니다.  
 아래 파일을 이용하여 데이터베이스를 설정할 수 있습니다.
 
-- 📂 `database/schema.sql` → **데이터베이스 테이블 생성**
-- 📂 `database/data.sql` → **초기 데이터 삽입**
+- 📂 `calendar/schema.sql` → **데이터베이스 테이블 생성**
+- 📂 `calendar/data.sql` → **초기 데이터 삽입**
 
 #### **1️⃣ MySQL 실행 및 데이터베이스 생성**
 ```sql
