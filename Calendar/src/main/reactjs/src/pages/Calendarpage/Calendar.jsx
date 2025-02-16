@@ -64,9 +64,12 @@ const Calendar = () => {
         day = addDays(day, 1);
     }
 
-    // 날짜 클릭 시 이동
+    // 날짜 클릭 시 다이어리 페이지로 이동하면서 상태 전달
     const handleDateClick = (date) => {
-        navigate(`/diary/${format(date, "yyyy-MM-dd")}`);
+        const formattedDate = format(date, "yyyy-MM-dd");
+        navigate(`/calendar/${formattedDate}`, {
+            state: { isCalendarMode: true, selectedDate: formattedDate },
+        });
     };
 
     // 월 변경 핸들러
@@ -82,7 +85,7 @@ const Calendar = () => {
 
     return (
         <Box display="flex" height="100vh">
-            <Sidebar userInfo={userInfo} /> {/* ✅ 사용자 정보 props로 전달 */}
+            <Sidebar userInfo={userInfo} />
 
             <Box flex={1} display="flex" flexDirection="column" alignItems="center" p={3}>
                 <Typography variant="h4" gutterBottom>
