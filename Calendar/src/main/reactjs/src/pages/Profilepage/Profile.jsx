@@ -100,19 +100,45 @@ const Profile = () => {
                 <Typography variant="h5" gutterBottom>프로필</Typography>
 
                 {/* 프로필 이미지 */}
-                <Box display="flex" justifyContent="center" mb={4}>
-                    <label htmlFor="fileInput">
+                <Box display="flex" justifyContent="center" mb={4} position="relative">
+                    <label htmlFor="fileInput" style={{ position: "relative", cursor: "pointer" }}>
+                        {/* 프로필 이미지 */}
                         <Avatar
                             sx={{
                                 width: 150,
                                 height: 150,
-                                cursor: "pointer",
                                 objectFit: "cover",
+                                transition: "0.3s",
+                                "&:hover": { filter: "brightness(0.7)" }, // 마우스 오버 시 효과
                             }}
-                            src={imagePreview || "default-profile.png"} // 기존 이미지 or 기본 이미지
+                            src={imagePreview || "default-profile.png"}
                             alt="Profile"
                         />
+
+                        {/* 마우스 오버 시 "파일 추가" 텍스트 표시 */}
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                color: "white",
+                                fontSize: "0.9rem",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                opacity: 0,
+                                transition: "opacity 0.3s",
+                                borderRadius: "50%",
+                                "&:hover": { opacity: 1 }, // 마우스 오버 시 표시
+                            }}
+                        >
+                            파일 추가
+                        </Box>
                     </label>
+
                     <input
                         type="file"
                         id="fileInput"
@@ -138,12 +164,12 @@ const Profile = () => {
                         <Button
                             variant="contained"
                             onClick={handleNicknameCheck}
-                            disabled={loading}
+                            disabled={loading || !nickname}
                             fullWidth
                             sx={{
-                                backgroundColor: "black",
+                                backgroundColor: !nickname ? "#d6d6d6" : "black",
                                 color: "white",
-                                "&:hover": { backgroundColor: "#333" },
+                                "&:hover": { backgroundColor: !nickname ? "#d6d6d6" : "#333" },
                                 fontSize: "0.75rem",
                                 padding: "10px",
                             }}

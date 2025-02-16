@@ -16,16 +16,16 @@ const Diary = () => {
     const saveDiary = async () => {
         if (!editorRef.current) return;
 
-        const content = editorRef.current.getInstance().getMarkdown();
+        const content = editorRef.current.getInstance().getHTML();
 
         try {
             await axios.post("/api/diaries/save", {
-                userId: 1,
                 diaryDate: selectedDate || new Date().toISOString().split("T")[0],
                 diaryTitle: title,
-                diaryContent: content,
+                diaryContent: content, // HTML을 그대로 저장
             });
             alert("다이어리가 저장되었습니다!");
+            window.location.reload();
         } catch (error) {
             console.error("다이어리 저장 실패:", error);
         }
@@ -64,9 +64,9 @@ const Diary = () => {
                     <Editor
                         ref={editorRef}
                         initialValue="여기에 다이어리를 작성하세요..."
-                        previewStyle="tab"
+                        previewStyle="vertical"
                         height="500px"
-                        initialEditType="markdown"
+                        initialEditType="wysiwyg"
                         useCommandShortcut={true}
                     />
                 </Box>

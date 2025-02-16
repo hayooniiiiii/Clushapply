@@ -31,27 +31,23 @@ function Mainpage() {
                 {/* 배너 (사이드바 옆부터 창 끝까지 완전히 붙이기) */}
                 <Box
                     sx={{
-                        width: "calc(100vw - 240px)", // 사이드바 옆부터 창 끝까지 꽉 채움
+                        width: "calc(100vw - 240px)", // 사이드바 제외한 너비
                         minHeight: "300px",
-                        backgroundColor: "#ddd",
+                        backgroundColor: "#fdf0c2", // ✅ 노란 배경 추가
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        borderRadius: "0", // 공백 없이 확장
+                        borderRadius: "0",
                         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                        margin: "0", // 공백 제거
+                        margin: "10",
+                        backgroundImage: `url("/banner4.jpg")`, // ✅ 배경 이미지 설정
+                        backgroundSize: "contain", // ✅ 아이콘이 잘리지 않도록 설정
+                        backgroundPosition: "center", // ✅ 아이콘이 중앙에 위치
+                        backgroundRepeat: "no-repeat", // ✅ 반복 방지
                     }}
                 >
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            color: "#5d4037",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        배너 이미지 영역
-                    </Typography>
                 </Box>
+
 
                 {/* 홍보 문구 (조금 아래로 + 왼쪽으로 이동) */}
                 <Typography

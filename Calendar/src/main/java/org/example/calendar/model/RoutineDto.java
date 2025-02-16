@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FriendDto {
-    private Long id;
+public class RoutineDto {
+    private Long routineId;
     private Long userId;
-    private Long ownerId;
+    private String routineName;
+    private String routineDate;  // ✅ String으로 수정
 }

@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Box, Typography, Button, Stack, Divider } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-function Sidebar({ showExtraItems, isCalendarMode }) {
+function Sidebar() {
     const [user, setUser] = useState(null);
     const [imageUrl, setImageUrl] = useState("/default-profile.png");
-    const [selectedMenu, setSelectedMenu] = useState("오늘의 일정"); // 기본값: 오늘의 일정
-    const location = useLocation();
     const navigate = useNavigate();
-    const { selectedDate } = location.state || {};
+    const location = useLocation();
+
+    // ✅ URL에서 날짜 추출
+    const pathSegments = location.pathname.split("/");
+    const dateFromURL = pathSegments[1] === "diarylist" || pathSegments[1] === "saju"  || pathSegments[1] === "routinelist" ? pathSegments[2] : null;
 
     useEffect(() => {
+        console.log("URL-based selectedDate:", dateFromURL); // ✅ URL에서 가져온 날짜 확인
         const jwtToken = Cookies.get("jwtToken");
         if (jwtToken) {
             const fetchUser = async () => {
@@ -45,13 +48,6 @@ function Sidebar({ showExtraItems, isCalendarMode }) {
         }
     }, []);
 
-    // 날짜를 클릭할 때 기본으로 "오늘의 일정" 선택되도록 설정
-    useEffect(() => {
-        if (selectedDate) {
-            setSelectedMenu("오늘의 일정");
-        }
-    }, [selectedDate]);
-
     const handleLogout = () => {
         Cookies.remove("jwtToken");
         setUser(null);
@@ -75,14 +71,157 @@ function Sidebar({ showExtraItems, isCalendarMode }) {
                 fontFamily: "'Song Myung', serif",
             }}
         >
-            {/* 헤더 (로고) */}
             <Typography variant="h4" sx={{ fontSize: "32px", fontWeight: "bold", color: "#000", marginBottom: "40px" }}>
                 Calendiary
             </Typography>
 
-            {/* 로그인하지 않은 경우: 소셜 로그인 버튼 표시 */}
-            {!user && (
+            {/* ✅ 로그인한 경우 프로필 정보 표시 */}
+            {user ? (
                 <>
+                    <img
+                        src={imageUrl}
+                        alt="프로필"
+                        style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
+                        onError={(e) => { e.target.src = "/default-profile.png"; }}
+                    />
+                    <Typography variant="body1" sx={{ fontSize: "20px", color: "#5d4037", fontWeight: "bold", marginBottom: "10px" }}>
+                        {user.userNickname} 님 DIARY
+                    </Typography>
+
+                    {/* ✅ URL에서 `date`가 있으면 메뉴 추가 */}
+                    {dateFromURL && (
+                        <>
+                            {/* ✅ 다이어리 메뉴 */}
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                    color: "#3e2723",
+                                    marginBottom: "20px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    transition: "all 0.3s ease-in-out",
+                                    backgroundColor: location.pathname.includes("/diarylist")
+                                        ? "#e0f2f1"
+                                        : "transparent",
+                                    boxShadow: location.pathname.includes("/diarylist")
+                                        ? "0px 4px 10px rgba(0, 0, 0, 0.2)"
+                                        : "none",
+                                    "&:hover": {
+                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                                        backgroundColor: "#f5f5f5",
+                                    },
+                                }}
+                                onClick={() => navigate(`/diarylist/${dateFromURL}`)}
+                            >
+                                📖 {dateFromURL} 다이어리
+                            </Typography>
+
+                            {/* ✅ 일정  메뉴 */}
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                    color: "#3e2723",
+                                    marginBottom: "20px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    transition: "all 0.3s ease-in-out",
+                                    backgroundColor: location.pathname.includes("/saju")
+                                        ? "#e0f2f1"
+                                        : "transparent",
+                                    boxShadow: location.pathname.includes("/saju")
+                                        ? "0px 4px 10px rgba(0, 0, 0, 0.2)"
+                                        : "none",
+                                    "&:hover": {
+                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                                        backgroundColor: "#f5f5f5",
+                                    },
+                                }}
+                                onClick={() => navigate(`/routinelist/${dateFromURL}`)}
+                            >
+                                ✅ {dateFromURL} 일정
+                            </Typography>
+
+
+                            {/* ✅ 사주 메뉴 */}
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                    color: "#3e2723",
+                                    marginBottom: "20px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    transition: "all 0.3s ease-in-out",
+                                    backgroundColor: location.pathname.includes("/saju")
+                                        ? "#e0f2f1"
+                                        : "transparent",
+                                    boxShadow: location.pathname.includes("/saju")
+                                        ? "0px 4px 10px rgba(0, 0, 0, 0.2)"
+                                        : "none",
+                                    "&:hover": {
+                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                                        backgroundColor: "#f5f5f5",
+                                    },
+                                }}
+                                onClick={() => navigate(`/saju/${dateFromURL}`)}
+                            >
+                                🔮 {dateFromURL} 사주
+                            </Typography>
+
+                            {/* ✅ 캘린더 보기 버튼 */}
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                    color: "#3e2723",
+                                    marginBottom: "20px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    transition: "all 0.3s ease-in-out",
+                                    "&:hover": {
+                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                                        backgroundColor: "#f5f5f5",
+                                    },
+                                }}
+                                onClick={() => navigate(`/calendar/`)}
+                            >
+                                📅 캘린더 보기
+                            </Typography>
+                        </>
+                    )}
+
+                    {/* ✅ 로그아웃 버튼 */}
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            fontSize: "14px",
+                            color: "#b71c1c",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                        }}
+                        onClick={handleLogout}
+                    >
+                        로그아웃
+                    </Typography>
+                </>
+            ) : (
+                <>
+                    {/* ✅ 로그인하지 않은 경우 소셜 로그인 버튼 표시 */}
                     <Typography variant="body1" sx={{ fontSize: "20px", color: "#5d4037", fontWeight: "bold", marginBottom: "10px" }}>
                         소셜 로그인
                     </Typography>
@@ -107,103 +246,6 @@ function Sidebar({ showExtraItems, isCalendarMode }) {
                             </Button>
                         ))}
                     </Stack>
-                </>
-            )}
-
-            {/* 로그인한 경우: 프로필 정보 및 메뉴 표시 */}
-            {user && (
-                <>
-                    <img
-                        src={imageUrl}
-                        alt="프로필"
-                        style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
-                        onError={(e) => { e.target.src = "/default-profile.png"; }} // 기본 이미지 적용
-                    />
-                    <Typography variant="body1" sx={{ fontSize: "20px", color: "#5d4037", fontWeight: "bold", marginBottom: "10px" }}>
-                        {user.userNickname} 님 DIARY
-                    </Typography>
-
-                    {/* 달력에서 날짜를 선택한 경우 메뉴 표시 */}
-                    {(showExtraItems || isCalendarMode) && (
-                        <>
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                    color: selectedMenu === "오늘의 일정" ? "#b71c1c" : "#3e2723",
-                                    marginBottom: "20px",
-                                    transition: "all 0.3s",
-                                    cursor: "pointer",
-                                    textAlign: "center",
-                                    '&:hover': { textShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)" }
-                                }}
-                                onClick={() => setSelectedMenu("오늘의 일정")}
-                            >
-                                오늘의 일정
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                    color: selectedMenu === "오늘의 다이어리" ? "#b71c1c" : "#3e2723",
-                                    marginBottom: "20px",
-                                    cursor: "pointer",
-                                    textAlign: "center",
-                                    '&:hover': { textShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)" }
-                                }}
-                                onClick={() => setSelectedMenu("오늘의 다이어리")}
-                            >
-                                오늘의 다이어리
-                            </Typography>
-                        </>
-                    )}
-
-                    {/* 나의 캘린더 (순서 변경: 나의 캘린더 → 친구 목록) */}
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                            color: "#3e2723",
-                            marginBottom: "20px",
-                            cursor: "pointer",
-                            textAlign: "center",
-                            transition: "all 0.3s",
-                            '&:hover': { textShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)" }
-                        }}
-                        onClick={() => navigate("/calendar")} // 클릭하면 캘린더로 이동
-                    >
-                        나의 캘린더
-                    </Typography>
-
-                    {/* 친구 목록 (나의 캘린더 아래로 이동) */}
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                            color: "#3e2723",
-                            marginBottom: "20px",
-                            cursor: "pointer",
-                            textAlign: "center",
-                            transition: "all 0.3s",
-                            '&:hover': { textShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)" }
-                        }}
-                    >
-                        친구 목록
-                    </Typography>
-
-                    {/* 로그아웃 버튼 */}
-                    <Typography
-                        variant="body2"
-                        sx={{ fontSize: "14px", color: "#b71c1c", fontWeight: "bold", cursor: "pointer", textDecoration: "underline" }}
-                        onClick={handleLogout}
-                    >
-                        로그아웃
-                    </Typography>
                 </>
             )}
         </Box>
