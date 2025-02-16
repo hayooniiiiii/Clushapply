@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, List, ListItem, ListItemText, Typography, CircularProgress, Card, CardContent } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Typography, CircularProgress, Card, CardContent, Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";  // ✅ useParams 추가
 import Sidebar from "../../components/Sidebar";
 import axios from "axios";
@@ -34,6 +34,11 @@ const DiaryList = () => {
         navigate(`/diary/${diaryId}`);
     };
 
+    // ✅ 다이어리 추가 버튼 클릭 시 /diary 페이지로 이동
+    const handleAddDiary = () => {
+        navigate("/diary");
+    };
+
     return (
         <Box display="flex">
             <Sidebar sx={{ width: 250, flexShrink: 0 }} />
@@ -41,10 +46,25 @@ const DiaryList = () => {
                 {loading && <CircularProgress />}
                 {error && <Typography color="error">{error}</Typography>}
 
-                <List sx={{ maxWidth: "800px", margin: "0 auto" }}>
-                    <Typography variant="h4" sx={{ mb: 3, fontWeight: "bold" }}>
+                {/* ✅ 다이어리 추가 버튼 */}
+                <Box display="flex" justifyContent="space-between" alignItems="center" maxWidth="800px" margin="0 auto" mb={3}>
+                    <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                         📖 {date}의 다이어리 목록
                     </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={handleAddDiary}
+                        sx={{
+                            backgroundColor: "black",
+                            color: "white",
+                            "&:hover": { backgroundColor: "#333" },
+                        }}
+                    >
+                        + 다이어리 추가
+                    </Button>
+                </Box>
+
+                <List sx={{ maxWidth: "800px", margin: "0 auto" }}>
                     {diaries.length === 0 && !loading && <Typography>해당 날짜에 작성된 다이어리가 없습니다.</Typography>}
 
                     {diaries.map((diary) => (

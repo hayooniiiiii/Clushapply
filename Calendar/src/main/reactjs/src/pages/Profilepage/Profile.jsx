@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { TextField, Button, Avatar, Grid, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const [nickname, setNickname] = useState("");
@@ -11,6 +12,7 @@ const Profile = () => {
     const [imagePreview, setImagePreview] = useState(null);
     const [saving, setSaving] = useState(false);
     const [userId, setUserId] = useState(null);
+    const navigate = useNavigate();
 
     const location = useLocation();
 
@@ -70,6 +72,7 @@ const Profile = () => {
 
             if (response.ok) {
                 alert("프로필이 저장되었습니다.");
+                navigate("/calendar");
             } else {
                 alert("저장 실패.");
             }

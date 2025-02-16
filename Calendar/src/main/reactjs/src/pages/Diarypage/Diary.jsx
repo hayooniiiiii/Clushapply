@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import Sidebar from "../../components/Sidebar";
 import { Editor } from "@toast-ui/react-editor";
@@ -11,6 +11,7 @@ const Diary = () => {
     const { isCalendarMode, selectedDate } = location.state || {};
     const editorRef = useRef(null);
     const [title, setTitle] = useState("");
+    const navigate = useNavigate();
 
     // 다이어리 저장
     const saveDiary = async () => {
@@ -25,7 +26,8 @@ const Diary = () => {
                 diaryContent: content, // HTML을 그대로 저장
             });
             alert("다이어리가 저장되었습니다!");
-            window.location.reload();
+            navigate(-1);
+
         } catch (error) {
             console.error("다이어리 저장 실패:", error);
         }
