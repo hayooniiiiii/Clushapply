@@ -5,6 +5,7 @@ import React from "react";
 import Mainpage from "./pages/Mainpage";
 import Profile from "./pages/Profilepage/Profile";
 import Calendar from "./pages/Calendarpage/Calendar";
+import Diary from "./pages/Diarypage/Diary";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
 
             {/* 캘린더 페이지 경로 설정 */}
             <Route path="/calendar" element={<Calendar />} />
+
+            <Route path="/calendar/:date" element={<Diary />} />
 
         </Routes>
       </Router>
