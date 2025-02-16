@@ -2,79 +2,70 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 
-
 function Mainpage() {
     return (
         <Box
             sx={{
                 display: "flex",
                 height: "100vh",
-                backgroundColor: "#f5f5f5", // 전체 배경색
+                backgroundColor: "#f5f5f5",
                 margin: 0,
                 padding: 0,
             }}
         >
-            {/* Sidebar 컴포넌트 추가 */}
+            {/* 사이드바 */}
             <Sidebar />
 
-            {/* 배너 및 홍보 문구 섹션 */}
+            {/* 메인 콘텐츠 (사이드바 오른쪽부터 화면 끝까지 꽉 채우기) */}
             <Box
                 sx={{
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    padding: 0, // 패딩 제거
-                    position: "relative", // 홍보 문구 위치 설정을 위한 부모 요소
+                    alignItems: "center",
+                    marginLeft: "240px",
+                    textAlign: "center",
+                    padding: "0", // 패딩 제거해서 공백 없애기
                 }}
             >
-                {/* 배너 이미지 */}
+                {/* 배너 (사이드바 옆부터 창 끝까지 완전히 붙이기) */}
                 <Box
                     sx={{
-                        width: "100%",
-                        height: "50%",
-                        backgroundColor: "#ddd",
-                        borderRadius: "0px",
-                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                        width: "calc(100vw - 240px)", // 사이드바 제외한 너비
+                        minHeight: "300px",
+                        backgroundColor: "#fdf0c2", // ✅ 노란 배경 추가
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginTop: "50px", // 배너 위치
-                        marginBottom: 0, // 간격 제거
+                        borderRadius: "0",
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                        margin: "10",
+                        backgroundImage: `url("/banner4.jpg")`, // ✅ 배경 이미지 설정
+                        backgroundSize: "contain", // ✅ 아이콘이 잘리지 않도록 설정
+                        backgroundPosition: "center", // ✅ 아이콘이 중앙에 위치
+                        backgroundRepeat: "no-repeat", // ✅ 반복 방지
                     }}
                 >
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            color: "#5d4037",
-                            fontWeight: "bold",
-                            textAlign: "center",
-                        }}
-                    >
-                        배너 이미지 영역
-                    </Typography>
                 </Box>
 
-                {/* 홍보 텍스트 */}
+
+                {/* 홍보 문구 (조금 아래로 + 왼쪽으로 이동) */}
                 <Typography
-                    variant="h5"
+                    variant="h4"
                     sx={{
-                        position: "absolute", // 위치를 고정
-                        bottom: "100px", // 화면의 아래에서 100px 위에 고정
-                        right: "50px", // 화면의 오른쪽에서 50px 안쪽에 고정
-                        transform: "rotate(-20deg)", // 기울기 유지
                         color: "#000",
-                        opacity: 0.6,
+                        marginLeft: "30%",
+                        marginTop: "50px",
+                        opacity: 0.7,
                         fontFamily: "'Song Myung', serif",
-                        fontSize: "45px",
+                        fontSize: "60px", // 글자 크기 증가
                         lineHeight: "1.5",
-                        textAlign: "center", // 텍스트 중앙 정렬
-                        whiteSpace: "pre-line", // 줄바꿈 강제 적용
+                        whiteSpace: "pre-line",
+                        padding: "20px",
+                        transform: "rotate(-18deg) translate(-0px, 40px)", // 왼쪽(-10px), 아래(20px) 이동
                     }}
                 >
-                    하루를 기록하는 새로운 습관,{"\n"}
-                    Calendiary와 함께!
+                    하루를 기록하는 새로운 습관,{"\n"}Calendiary와 함께!
                 </Typography>
             </Box>
         </Box>

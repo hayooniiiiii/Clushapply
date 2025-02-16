@@ -27,14 +27,18 @@ public class Diary {
     @Column(name = "diaryDate")
     private LocalDate diaryDate;
 
+
+    @Column(name = "diaryHeader")
+    private String diaryHeader;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @Column(name = "diaryContent")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> diaryContent;
+    @Column(name = "diaryContent", columnDefinition = "TEXT")
+    private String diaryContent;
+
 
     @CreationTimestamp
     @Column(name = "diary_time", nullable = false, updatable = false)
