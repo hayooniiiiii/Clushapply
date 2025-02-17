@@ -32,8 +32,6 @@ public class DiaryService {
                 .diaryDate(diaryDto.getDiaryDate())
                 .diaryHeader(diaryDto.getDiaryHeader())
                 .diaryContent(diaryDto.getDiaryContent())
-                .diaryEdit(0L)
-                .diaryEditor(null)
                 .build();
 
         diaryRepository.save(diary);
@@ -49,8 +47,6 @@ public class DiaryService {
                 .diaryHeader(diary.getDiaryHeader())
                 .diaryContent(diary.getDiaryContent())
                 .diaryTime(diary.getDiaryTime())
-                .diaryEdit(diary.getDiaryEdit())
-                .diaryEditor(diary.getDiaryEditor())
                 .build()).collect(Collectors.toList());
     }
 
@@ -72,8 +68,6 @@ public class DiaryService {
                 .diaryHeader(diary.getDiaryHeader())
                 .diaryContent(diary.getDiaryContent())
                 .diaryTime(diary.getDiaryTime())
-                .diaryEdit(diary.getDiaryEdit())
-                .diaryEditor(diary.getDiaryEditor())
                 .build();
     }
 
