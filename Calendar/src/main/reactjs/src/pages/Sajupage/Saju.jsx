@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { TextField, Button, CircularProgress, Typography, Box, Card, CardContent, Grid } from "@mui/material";
 import Sidebar from "../../components/Sidebar";
 import { getTodaySaju } from "../../components/gpt";
 
 const Saju = ({ isCalendarMode, selectedDate }) => {
+    const { date } = useParams(); // URL에서 날짜 가져오기
     const [birthDate, setBirthDate] = useState("");
     const [birthTime, setBirthTime] = useState("");
     const [sajuResult, setSajuResult] = useState(null);
@@ -19,7 +21,7 @@ const Saju = ({ isCalendarMode, selectedDate }) => {
         setLoading(true);
         setError("");
         try {
-            const result = await getTodaySaju({ birthDate, birthTime });
+            const result = await getTodaySaju({ birthDate, birthTime, targetDate: date }); // targetDate 추가
             if (result) {
                 setSajuResult(result);
             } else {
@@ -37,9 +39,9 @@ const Saju = ({ isCalendarMode, selectedDate }) => {
             <Sidebar isCalendarMode={isCalendarMode} selectedDate={selectedDate} sx={{ width: 250, flexShrink: 0 }} />
 
             {/* Main Content */}
-            <Box component="main" sx={{ flexGrow: 1, p: 4, ml: 30 }}> {/* Sidebar와 겹치지 않도록 마진 추가 */}
+            <Box component="main" sx={{ flexGrow: 1, p: 4, ml: 30 }}>
                 <Typography variant="h4" gutterBottom fontWeight="bold">
-                    🔮 오늘의 사주 보기
+                    🔮 {date} 사주 보기
                 </Typography>
 
                 <Grid container spacing={2} alignItems="center">
@@ -92,7 +94,7 @@ const Saju = ({ isCalendarMode, selectedDate }) => {
                     <Card sx={{ mt: 4, p: 2, boxShadow: 3 }}>
                         <CardContent>
                             <Typography variant="h6" fontWeight="bold" gutterBottom>
-                                📜 오늘의 사주 결과
+                                📜 {date} 사주 결과
                             </Typography>
                             <Typography variant="body1">{sajuResult}</Typography>
                         </CardContent>
