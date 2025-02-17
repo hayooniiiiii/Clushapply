@@ -20,9 +20,39 @@ public class ProfileService {
     private static final String UPLOAD_DIR = "uploads/";
 
     private final UserRepository userRepository;
-
     public ProfileService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public UserDto getUserProfile(User user) {
+
+        return convertToDto(user);
+    }
+
+    /**
+     * ✅ 사용자 프로필 업데이트
+     */
+    public UserDto updateProfile(int userId, String nickname, String imageUrl) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
+        }
+
+        User user = optionalUser.get();
+        user.setUserNickname(nickname);
+
+        if (imageUrl != null) {
+            user.setUserImage(imageUrl);
+        }
+
+        userRepository.save(user);
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .userNickname(user.getUserNickname())
+                .userImage(user.getUserImage())
+                .build();
     }
 
     /**

@@ -5,7 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.calendar.entity.User;
 import org.example.calendar.model.UserDto;
+import org.example.calendar.service.JwtService;
 import org.example.calendar.service.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +23,63 @@ import java.util.Map;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final JwtService jwtService;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, JwtService jwtService) {
         this.profileService = profileService;
+        this.jwtService=jwtService;
+    }
+
+    /**
+     * ✅ 사용자 프로필 조회 API
+     * - JWT 에서 사용자 정보를 꺼내 현재 로그인된 사용자의 프로필을 반환
+     */
+    @GetMapping("/profile/edit")
+    @Operation(summary = "사용자 프로필 조회", description = "JWT로부터 사용자 정보를 추출하여 프로필 정보를 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "프로필 정보 조회 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    public ResponseEntity<UserDto> getUserProfile(HttpServletRequest request) {
+        // JWT 에서 사용자 정보 추출
+        User user = jwtService.getUserFromJwt(request)
+                .orElseThrow(() -> new IllegalArgumentException("Unauthorized"));
+
+        // 해당 사용자의 최신 프로필 정보 조회
+        UserDto userProfile = profileService.getUserProfile(user);
+        return ResponseEntity.ok(userProfile);
+    }
+    /**
+     * ✅ 프로필 업데이트 API
+     */
+    @PostMapping("/update-profile")
+    @Operation(summary = "사용자 프로필 업데이트", description = "닉네임 및 프로필 이미지를 업데이트합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "프로필 업데이트 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    public ResponseEntity<UserDto> updateProfile(
+            HttpServletRequest request,
+            @RequestParam("nickname") String nickname,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+
+        // JWT 에서 사용자 정보 추출
+        User user = jwtService.getUserFromJwt(request)
+                .orElseThrow(() -> new IllegalArgumentException("Unauthorized"));
+
+        int userId=user.getUserId();
+
+        // 기존 파일 업로드 로직 유지
+        String imageUrl = null;
+        if (file != null && !file.isEmpty()) {
+            imageUrl = profileService.uploadImage(file);
+        }
+
+        // 사용자 프로필 업데이트 처리
+        UserDto updatedUser = profileService.updateProfile(userId,nickname, imageUrl);
+        return ResponseEntity.ok(updatedUser);
     }
 
     /**
@@ -81,4 +138,6 @@ public class ProfileController {
         UserDto savedUser = profileService.saveProfile(userDto);
         return ResponseEntity.ok(savedUser);
     }
+
+
 }

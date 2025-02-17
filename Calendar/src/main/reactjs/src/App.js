@@ -11,6 +11,7 @@ import Diarylook from "./pages/Diarypage/Diarylook";
 import DiaryEdit from "./pages/Diarypage/DiaryEdit";
 import Saju from "./pages/Sajupage/Saju";
 import Routinelist from "./pages/Routinepage/Routinelist";
+import ProfileEdit from "./pages/Profilepage/ProfileEdit";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/diary/edit/:id" element={<DiaryEdit />} />
             <Route path="/saju/:date" element={<Saju/>} />
             <Route path="/routinelist/:date" element={<Routinelist/>} />
+            <Route path="/profile-edit" element={<ProfileEdit />} />
 
         </Routes>
       </Router>

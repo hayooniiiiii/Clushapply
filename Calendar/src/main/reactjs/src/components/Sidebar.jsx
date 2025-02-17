@@ -11,7 +11,12 @@ function Sidebar() {
 
     // ✅ URL에서 날짜 추출
     const pathSegments = location.pathname.split("/");
-    const dateFromURL = pathSegments[1] === "diarylist" || pathSegments[1] === "saju"  || pathSegments[1] === "routinelist" ? pathSegments[2] : null;
+    const dateFromURL =
+        pathSegments[1] === "diarylist" ||
+        pathSegments[1] === "saju" ||
+        pathSegments[1] === "routinelist"
+            ? pathSegments[2]
+            : null;
 
     useEffect(() => {
         console.log("URL-based selectedDate:", dateFromURL); // ✅ URL에서 가져온 날짜 확인
@@ -54,6 +59,11 @@ function Sidebar() {
         window.location.reload();
     };
 
+    // 프로필 편집 버튼 클릭 핸들러(예: /profile-edit 경로로 이동)
+    const handleProfileEdit = () => {
+        navigate("/profile-edit");
+    };
+
     return (
         <Box
             sx={{
@@ -71,7 +81,15 @@ function Sidebar() {
                 fontFamily: "'Song Myung', serif",
             }}
         >
-            <Typography variant="h4" sx={{ fontSize: "32px", fontWeight: "bold", color: "#000", marginBottom: "40px" }}>
+            <Typography
+                variant="h4"
+                sx={{
+                    fontSize: "32px",
+                    fontWeight: "bold",
+                    color: "#000",
+                    marginBottom: "40px",
+                }}
+            >
                 Calendiary
             </Typography>
 
@@ -81,10 +99,25 @@ function Sidebar() {
                     <img
                         src={imageUrl}
                         alt="프로필"
-                        style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
-                        onError={(e) => { e.target.src = "/default-profile.png"; }}
+                        style={{
+                            width: "80px",
+                            height: "80px",
+                            borderRadius: "50%",
+                            marginBottom: "10px",
+                        }}
+                        onError={(e) => {
+                            e.target.src = "/default-profile.png";
+                        }}
                     />
-                    <Typography variant="body1" sx={{ fontSize: "20px", color: "#5d4037", fontWeight: "bold", marginBottom: "10px" }}>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            fontSize: "20px",
+                            color: "#5d4037",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                        }}
+                    >
                         {user.userNickname} 님 DIARY
                     </Typography>
 
@@ -133,10 +166,10 @@ function Sidebar() {
                                     padding: "10px",
                                     borderRadius: "8px",
                                     transition: "all 0.3s ease-in-out",
-                                    backgroundColor: location.pathname.includes("/saju")
+                                    backgroundColor: location.pathname.includes("/routinelist")
                                         ? "#e0f2f1"
                                         : "transparent",
-                                    boxShadow: location.pathname.includes("/saju")
+                                    boxShadow: location.pathname.includes("/routinelist")
                                         ? "0px 4px 10px rgba(0, 0, 0, 0.2)"
                                         : "none",
                                     "&:hover": {
@@ -148,7 +181,6 @@ function Sidebar() {
                             >
                                 ✅ {dateFromURL} 일정
                             </Typography>
-
 
                             {/* ✅ 사주 메뉴 */}
                             <Typography
@@ -204,37 +236,84 @@ function Sidebar() {
                         </>
                     )}
 
-                    {/* ✅ 로그아웃 버튼 */}
-                    <Typography
-                        variant="body2"
-                        sx={{
-                            fontSize: "14px",
-                            color: "#b71c1c",
-                            fontWeight: "bold",
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                        }}
-                        onClick={handleLogout}
-                    >
-                        로그아웃
-                    </Typography>
+                    {/* ✅ 로그아웃 | 프로필 편집 버튼 */}
+                    <Stack direction="row" spacing={1} sx={{ marginTop: "10px" }}>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                fontSize: "14px",
+                                color: "#b71c1c",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                            }}
+                            onClick={handleLogout}
+                        >
+                            로그아웃
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                fontSize: "14px",
+                                color: "#b71c1c",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            |
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                fontSize: "14px",
+                                color: "#b71c1c",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                            }}
+                            onClick={handleProfileEdit}
+                        >
+                            프로필 편집
+                        </Typography>
+                    </Stack>
                 </>
             ) : (
                 <>
                     {/* ✅ 로그인하지 않은 경우 소셜 로그인 버튼 표시 */}
-                    <Typography variant="body1" sx={{ fontSize: "20px", color: "#5d4037", fontWeight: "bold", marginBottom: "10px" }}>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            fontSize: "20px",
+                            color: "#5d4037",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                        }}
+                    >
                         소셜 로그인
                     </Typography>
-                    <Divider sx={{ width: "60%", borderBottomWidth: 2, borderColor: "#5d4037", marginBottom: "20px" }} />
+                    <Divider
+                        sx={{
+                            width: "60%",
+                            borderBottomWidth: 2,
+                            borderColor: "#5d4037",
+                            marginBottom: "20px",
+                        }}
+                    />
 
                     <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
                         {["naver", "google", "kakao"].map((provider) => (
                             <Button
                                 key={provider}
                                 variant="contained"
-                                onClick={() => (window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`)}
+                                onClick={() =>
+                                    (window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`)
+                                }
                                 sx={{
-                                    backgroundColor: provider === "naver" ? "#03c75a" : provider === "google" ? "#fff" : "#fee500",
+                                    backgroundColor:
+                                        provider === "naver"
+                                            ? "#03c75a"
+                                            : provider === "google"
+                                                ? "#fff"
+                                                : "#fee500",
                                     minWidth: "50px",
                                     height: "50px",
                                     borderRadius: "50%",
@@ -242,7 +321,11 @@ function Sidebar() {
                                     padding: 0,
                                 }}
                             >
-                                <img src={`/socialicon/${provider}.png`} alt={`${provider} 로그인`} style={{ width: "30px", height: "30px" }} />
+                                <img
+                                    src={`/socialicon/${provider}.png`}
+                                    alt={`${provider} 로그인`}
+                                    style={{ width: "30px", height: "30px" }}
+                                />
                             </Button>
                         ))}
                     </Stack>

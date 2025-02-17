@@ -45,11 +45,4 @@ public class Diary {
     private LocalDateTime diaryTime;
 
 
-    @ColumnDefault("0")
-    @Column(name = "diaryEdit", nullable = false)
-    private Long diaryEdit;
-
-    @Column(name = "diaryEditor")
-    private Long diaryEditor;
-
 }
