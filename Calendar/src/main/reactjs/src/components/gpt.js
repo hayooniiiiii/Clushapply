@@ -1,20 +1,35 @@
-export const getTodaySaju = async ({ birthDate, birthTime }) => {
+export const getTodaySaju = async ({ birthDate, birthTime, targetDate }) => {
     const messages = [
         {
             role: "system",
-            content: `You are an expert fortune teller specializing in the Four Pillars of Destiny (Saju). Based on the given birth date and birth time, generate an analysis for today's fortune. The response should be in Korean and include:
+            content: `You are an expert fortune teller specializing in the Four Pillars of Destiny (Saju). Based on the given birth date and birth time, generate an analysis for the specified date's fortune. The response should be in Korean and formatted as follows:
             
-            1. [오늘의 사주 개요]: A brief analysis of the person's energy flow and overall luck for today.
-            2. [재물운]: Financial fortune analysis.
-            3. [직장운]: Career-related predictions.
-            4. [연애운]: Romantic relationship forecast.
-            5. [건강운]: Health insights.
-            6. [행운의 요소]: Lucky colors, numbers, and directions.`
+            1. [사주 개요] 
+            - (Brief analysis of the person's energy flow and overall luck for the specified date.) 
+            
+            2. [재물운]
+            - (Financial fortune analysis.)
+            
+            3. [직장운]
+            - (Career-related predictions.)
+            
+            4. [연애운]
+            - (Romantic relationship forecast.)
+            
+            5. [건강운]
+            - (Health insights.)
+            
+            6. [행운의 요소]
+            - (Lucky colors, numbers, and directions.)
+
+            Each section must be separated by a newline, and bullet points must be used before each description.`
         },
         {
             role: "user",
             content: `사용자의 생년월일: ${birthDate}, 출생 시간: ${birthTime} 
-            오늘의 사주를 분석해줘.`
+            사주를 분석할 날짜: ${targetDate}
+            
+            해당 날짜(${targetDate})의 사주를 분석해줘.`
         }
     ];
 
